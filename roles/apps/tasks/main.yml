@@ -1,0 +1,164 @@
+---
+- name: Install things
+  sudo: yes
+  pacman: name={{ item }} state=present
+  with_items:
+    - vim
+    - i3
+    - i3status
+    - xterm
+    - git
+    - openssh
+    - xf86-input-synaptics
+    - xf86-video-intel
+    - zsh
+    - rxvt-unicode
+    - docker
+    - alsa-utils
+    - tk
+    - gsfonts
+    - curl
+    - filezilla
+    - gimp
+    - htop
+    - lftp
+    - meld
+    - pandoc
+    - shutter
+    - exfat-utils
+    - ncdu
+    - tree
+    - unison
+    - xclip
+    - networkmanager
+    - gnome-keyring
+    - dnsmasq
+    - network-manager-applet
+    - dnsutils
+    - php
+    - nodejs
+    - npm
+    - ruby
+    - lightdm
+    - lightdm-gtk-greeter
+
+- name: Enable lightdm
+  sudo: yes
+  shell: systemctl enable lightdm
+
+- name: Set the greeter session
+  sudo: yes
+  shell: >
+    sed -i \
+      -e 's/#greeter-session=.*/greeter-session=lightdm-gtk-greeter/g' \
+      /etc/lightdm/lightdm.conf
+
+- name: Install Google Chrome
+  include: ../../aur/pkg.yml pkg_name=google-chrome
+
+- name: Install Idea Intellij
+  include: ../../aur/pkg.yml pkg_name=intellij-idea-ultimate-edition
+
+- name: Install Idea Spotify deps
+  include: ../../aur/pkg.yml pkg_name=libcurl-compat
+
+- name: Install Idea Spotify
+  include: ../../aur/pkg.yml pkg_name=spotify
+
+- name: Install dmenu2
+  include: ../../aur/pkg.yml pkg_name=dmenu2
+
+- name: Install Powerline fonts
+  include: ../../aur/pkg.yml pkg_name=powerline-fonts-git
+
+- name: Install Atom editor
+  include: ../../aur/pkg.yml pkg_name=atom-editor-bin
+
+- name: Install git-flow
+  include: ../../aur/pkg.yml pkg_name=gitflow-git
+
+- name: Install thefuck
+  sudo: yes
+  easy_install: name=thefuck executable=easy_install-2.7
+
+- stat: path=/home/adrien/.xinitrc
+  register: st
+
+- template: src=/etc/X11/xinit/xinitrc dest=/home/adrien/.xinitrc
+  when: not st.stat.exists
+
+- lineinfile: dest=/home/adrien/.xinitrc insertafter="EOF" line="exec i3"
+
+- name: Enable Network Manager service
+  sudo: yes
+  shell: systemctl enable NetworkManager
+
+- name: Ensure Network Manager is running
+  sudo: yes
+  service: name=NetworkManager state=started
+
+- name: Allow dnsmasq conf dir
+  sudo: yes
+  shell: >
+    sed -i \
+      -e 's/^#conf-dir=\/etc\/dnsmasq.d$/conf-dir=\/etc\/dnsmasq.d/g' \
+      /etc/dnsmasq.conf
+- name: Ensure /etc/dnsmasq.d exists
+  file: path=/etc/dnsmasq.d state=directory
+  sudo: yes
+
+- name: Install dnsmasq configuration
+  sudo: yes
+  template: src=dnsmasq.conf.j2 dest=/etc/dnsmasq.d/dev.conf
+
+- name: Preserve resolv.conf
+  sudo: yes
+  lineinfile: dest=/etc/dhcpcd.conf insertafter="EOF" line="nohook resolv.conf"
+
+- name: Check if dnsmasq is present in resolv.conf
+  shell: grep "nameserver 127.0.0.1" /etc/resolv.conf || true
+  changed_when: dnsmasq_present.stdout != ""
+  register: dnsmasq_present
+
+- name: Add dnsmasq to resolv.conf
+  sudo: yes
+  shell: sed -i '1 i\nameserver 127.0.0.1' /etc/resolv.conf
+
+- name: Enable dnsmasq service
+  sudo: yes
+  shell: systemctl enable dnsmasq
+
+- name: Restart dnsmasq
+  service: name=dnsmasq state=restarted
+  sudo: yes
+
+- name: Enable Docker Engine service
+  shell: systemctl enable docker
+  sudo: yes
+
+- name: Ensure Docker Engine is started
+  sudo: yes
+  service: name=docker state=started
+
+- name: Add yourself to the docker group
+  sudo: yes
+  shell: usermod -aG docker adrien
+
+- name: Install Docker Compose
+  include: ../../aur/pkg.yml pkg_name=docker-compose-bin
+
+- name: Check if Composer is present
+  stat: path=/usr/local/bin/composer
+  register: composer_bin
+
+- name: Install Composer
+  sudo: yes
+  when: not composer_bin.stat.exists
+  shell: curl -sSL https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+- name: Make the Composer bin yours
+  sudo: yes
+  file: >
+    path=/usr/local/bin/composer
+    owner=adrien
+    group=adrien

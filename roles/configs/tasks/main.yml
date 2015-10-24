@@ -1,0 +1,38 @@
+- name: Set zsh as default shell
+  shell: '[ "$SHELL" != "$(which zsh)" ] && chsh -s $(which zsh) || true'
+
+- name: Install OhMyZSH
+  git: repo=https://github.com/robbyrussell/oh-my-zsh.git dest=~/.oh-my-zsh update=no
+
+- name: Install syntax highlight
+  git: repo=git://github.com/zsh-users/zsh-syntax-highlighting.git dest=~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+  args:
+    accept_hostkey: yes
+
+- name: Setup .zshrc
+  copy: src=zshrc dest=~/.zshrc
+
+- name: Setup .Xdefaults
+  copy: src=Xdefaults dest=~/.Xdefaults
+
+- name: Setup .vimrc
+  copy: src=vimrc dest=~/.vimrc
+
+- name: Copy i3 config
+  copy: src=i3conf dest=~/.i3/config
+
+- name: Copy i3status config
+  copy: src=i3statusconf dest=~/.i3status.conf
+
+- name: Copy Xresources config
+  copy: src=Xresources dest=~/.Xresources
+
+- name: Install global gitignore list
+  copy: src=gitignore dest=~/.gitignore
+
+- name: Install gitconfig
+  template: src=gitconfig.j2 dest=~/.gitconfig
+
+- name: Set gb extended keymap in Xorg
+  sudo: yes
+  shell: localectl --no-convert set-x11-keymap gb pc104 extd

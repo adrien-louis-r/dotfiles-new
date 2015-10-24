@@ -1,0 +1,13 @@
+---
+- name: Install
+  hosts: localhost
+  roles:
+    - role: xorg
+      tags:
+        - xorg
+    - role: apps
+      tags:
+       - apps
+    - role: configs
+      tags:
+       - configs

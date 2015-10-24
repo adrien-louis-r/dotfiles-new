@@ -1,0 +1,70 @@
+[user]
+  name = {{git_username}}
+  email = {{git_email}}
+
+[core]
+  excludesfile = ~/.gitignore
+  editor = vim
+
+[alias]
+  # Commit
+  amend = commit --amend -C HEAD
+  cp    = cherry-pick -ex
+  undo  = !git reset --soft HEAD~ && git st
+  ci    = commit
+
+  # Staging
+  addall = !git add -u && git add . && git st
+  patch  = add --patch
+  unadd  = !git reset HEAD --
+
+  # Branches
+  br  = branch -v
+  bra = !git br -a
+  brr = !git br -r
+  brn = !git br --no-merged
+  cb  = checkout -b
+  pwd = rev-parse --abbrev-ref HEAD
+  go  = "!f() { [ -z $1 ] && echo \"Usage: git go <branch>\" && exit 1; git branch $1 2>/dev/null; git checkout $1; }; f"
+  co  = checkout
+
+  # Workflow
+  master  = checkout master
+  develop = checkout develop
+  ready   = rebase -i @{u}
+  standup = !git lg --since yesterday
+  purr    = pull --rebase=preserve
+  cl      = clone
+  finish  = "!f() { BRANCH=$(git pwd); git rebase -i $1 && git checkout $1 && git merge $BRANCH && git go $BRANCH; }; f"
+  wip     = !git addall && git commit -m'Work in progress'
+  unwip   = !git reset --soft HEAD~ && git unadd
+  pop     = stash pop
+
+  # Status
+  st = status -sb
+
+  # Logs
+  lg = log --pretty=format:'%Cred%h%Creset -%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+
+  # Utils
+  aliases = "!git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^ = ]*\\) = \\(.*\\)/\\1\t = > \\2/' | sort"
+  dt      = difftool
+  mt      = mergetool
+
+[mergetool]
+  prompt = false
+  keepBackup = false
+
+[github]
+  user = {{github_username}}
+
+[push]
+  default = simple
+
+[color]
+  diff = auto
+  interactive = auto
+  keepBackup = false
+
+[url "https://github.com/"]
+  insteadOf = git://github.com/

@@ -1,0 +1,10 @@
+Not user dependent
+.xinit.rc remove existing exec
+Fix chsh zsh
+Fix i3 changed each time
+Fix create .i3 config folder if not exist
+Fix fonts.conf
+nginx-proxy global
+handle sound config
+WTF : zcat ~/glethu.sql.gz| sed -e 's/ROW_FORMAT=FIXED//g' > glethu.sql
+audio keys

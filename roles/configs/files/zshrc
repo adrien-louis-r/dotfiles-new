@@ -1,0 +1,8 @@
+export ZSH=$HOME/.oh-my-zsh
+ZSH_THEME="af-magic"
+
+plugins=(git git-flow npm ssh-agent colorize colored-man composer extract zsh-syntax-highlightingi node npm bundler docker)
+
+source $ZSH/oh-my-zsh.sh
+
+export EDITOR="vim"
