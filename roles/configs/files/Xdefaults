@@ -42,7 +42,7 @@ URxvt.scrollBar:            false
 ! Perl extensions
 URxvt.perl-ext-common:      default,matcher
 URxvt.matcher.button:       1
-URxvt.urlLauncher:          firefox
+URxvt.urlLauncher:          google-chrome-stable
 
 ! Cursor
 URxvt.cursorBlink:          true
@@ -92,4 +92,3 @@ URxvt.pointerBlank:         true
 
 !! white dark/light
 *color7: #eee8d5
-

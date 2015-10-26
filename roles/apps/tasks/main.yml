@@ -41,6 +41,11 @@
     - ruby
     - lightdm
     - lightdm-gtk-greeter
+    - arandr
+    - pulseaudio
+    - thunderbird
+    - libreoffice-still
+    - rsync
 
 - name: Enable lightdm
   sudo: yes
@@ -76,6 +81,12 @@
 
 - name: Install git-flow
   include: ../../aur/pkg.yml pkg_name=gitflow-git
+
+- name: Install linux-aufs_friendly
+  include: ../../aur/pkg.yml pkg_name=linux-aufs_friendly
+
+- name: Install aufs
+  include: ../../aur/pkg.yml pkg_name=aufs
 
 - name: Install thefuck
   sudo: yes
@@ -162,3 +173,12 @@
     path=/usr/local/bin/composer
     owner=adrien
     group=adrien
+
+- name: Check if fasd is present
+  stat: path=/usr/local/bin/fasd
+  register: fasd_bin
+
+- name: Install fasd
+  sudo: yes
+  when: not fasd_bin.stat.exists
+  get_url: url=https://raw.githubusercontent.com/clvv/fasd/master/fasd dest=/usr/local/bin mode=0755

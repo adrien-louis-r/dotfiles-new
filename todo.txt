@@ -8,3 +8,4 @@ nginx-proxy global
 handle sound config
 WTF : zcat ~/glethu.sql.gz| sed -e 's/ROW_FORMAT=FIXED//g' > glethu.sql
 audio keys
+automate /etc/asound.conf (Maybe put it in .asoundrc)

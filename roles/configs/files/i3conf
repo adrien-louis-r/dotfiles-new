@@ -153,14 +153,13 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 bar {
         status_command i3status
-        tray_output primary
 }
 
 # Custom
 bindsym $mod+F1 exec "amixer -q sset Master,0 toggle"
 bindsym $mod+F2 exec "amixer -q sset Master,0 4- unmute"
 bindsym $mod+F3 exec "amixer -q sset Master,0 4+ unmute"
-bindsym $mod+F5 exec "xbacklight -dec 20"
-bindsym $mod+F6 exec "xbacklight -inc 20"
+bindsym $mod+F5 exec "xbacklight -dec 10"
+bindsym $mod+F6 exec "xbacklight -inc 10"
 
 exec --no-startup-id nm-applet

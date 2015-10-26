@@ -54,7 +54,7 @@
   sudo: yes
   sudo_user: "adrien"
   command: >
-    makepkg --noconfirm --noprogressbar -mfs
+    makepkg --noconfirm --noprogressbar -mfs --skippgpcheck
     chdir=/tmp/{{ pkg_name }}
   register: aur_makepkg_result
 
