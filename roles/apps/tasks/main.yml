@@ -46,6 +46,13 @@
     - thunderbird
     - libreoffice-still
     - rsync
+    - ruby
+    - pcmanfm
+    - zip
+    - unzip
+    - btrfs-progs
+    - steam
+    - httpie
 
 - name: Enable lightdm
   sudo: yes
@@ -59,10 +66,10 @@
       /etc/lightdm/lightdm.conf
 
 - name: Install Google Chrome
-  include: ../../aur/pkg.yml pkg_name=google-chrome
+  include: ../../aur/pkg.yml pkg_name=google-chrome-beta
 
-- name: Install Idea Intellij
-  include: ../../aur/pkg.yml pkg_name=intellij-idea-ultimate-edition
+- name: Install Phpstorm
+  include: ../../aur/pkg.yml pkg_name=phpstorm
 
 - name: Install Idea Spotify deps
   include: ../../aur/pkg.yml pkg_name=libcurl-compat
@@ -81,12 +88,6 @@
 
 - name: Install git-flow
   include: ../../aur/pkg.yml pkg_name=gitflow-git
-
-- name: Install linux-aufs_friendly
-  include: ../../aur/pkg.yml pkg_name=linux-aufs_friendly
-
-- name: Install aufs
-  include: ../../aur/pkg.yml pkg_name=aufs
 
 - name: Install thefuck
   sudo: yes

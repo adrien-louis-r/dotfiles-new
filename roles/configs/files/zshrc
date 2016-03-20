@@ -7,10 +7,17 @@ plugins=(git git-flow npm ssh-agent colorize colored-man composer extract zsh-sy
 source $ZSH/oh-my-zsh.sh
 
 export EDITOR="vim"
-export PATH=/usr/local/bin:$PATH
+export PATH=$HOME/.gem/ruby/2.2.0/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.gem/ruby/2.3.0/bin:/usr/local/bin:$PATH
+export TERM="xterm"
 
 alias dc=docker-compose
+alias dcr="dc run --rm"
 alias copy="xclip -selection c"
+alias mysql="dcr db mysql"
+alias 3mt="~/.screenlayout/3-monitors.sh"
+alias 2mt="~/.screenlayout/2-monitors.sh"
+alias 1mt="~/.screenlayout/1-monitor.sh"
 
 drm()  { docker rm $(docker ps -qa); }
 drme() { docker rm $(docker ps -qa --filter 'status=exited'); }

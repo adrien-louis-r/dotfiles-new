@@ -15,6 +15,8 @@ order += "volume master"
 order += "load"
 order += "cpu_usage"
 order += "disk /"
+order += "disk /var/lib/docker"
+order += "disk /home"
 order += "wireless wlp3s0"
 order += "ethernet enp0s25"
 order += "battery 0"
@@ -52,7 +54,15 @@ load {
 }
 
 disk "/" {
-        format = "%avail"
+        format = "/ %avail"
+}
+
+disk "/home" {
+        format = "/home %avail"
+}
+
+disk "/var/lib/docker" {
+        format = "/var/lib/docker %avail"
 }
 
 volume master {
